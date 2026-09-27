@@ -1,0 +1,411 @@
+/* =========================================================
+WPL 2026 - HEADER
+========================================================= */
+
+.wpl-header {
+position: relative;
+
+width: 100%;
+
+min-height: 115px;
+
+box-sizing: border-box;
+
+padding: 18px 30px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+color: #ffffff;
+
+background:
+radial-gradient(
+circle at 10% 20%,
+rgba(59, 130, 246, 0.30),
+transparent 28%
+),
+radial-gradient(
+circle at 90% 80%,
+rgba(245, 158, 11, 0.18),
+transparent 25%
+),
+linear-gradient(
+135deg,
+#081126 0%,
+#102452 50%,
+#172f68 100%
+);
+
+border-bottom: 3px solid #f59e0b;
+
+box-shadow:
+0 5px 25px rgba(15, 23, 42, 0.22);
+
+overflow: hidden;
+
+z-index: 20;
+}
+
+/* =========================================================
+HEADER SHINE
+========================================================= */
+
+.wpl-header::before {
+content: "";
+
+position: absolute;
+
+top: -100px;
+left: 50%;
+
+width: 500px;
+height: 220px;
+
+transform: translateX(-50%);
+
+background:
+radial-gradient(
+ellipse,
+rgba(255, 255, 255, 0.08),
+transparent 70%
+);
+
+pointer-events: none;
+}
+
+/* =========================================================
+LOGO / TITLE
+========================================================= */
+
+.logo-section {
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 16px;
+
+position: relative;
+
+z-index: 2;
+}
+
+/* =========================================================
+CRICKET LOGO
+========================================================= */
+
+.logo-icon {
+width: 62px;
+height: 62px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+font-size: 2.5rem;
+
+border-radius: 18px;
+
+background:
+linear-gradient(
+145deg,
+rgba(255, 255, 255, 0.16),
+rgba(255, 255, 255, 0.05)
+);
+
+border: 1px solid rgba(255, 255, 255, 0.14);
+
+box-shadow:
+inset 0 1px 0 rgba(255, 255, 255, 0.10),
+0 8px 20px rgba(0, 0, 0, 0.18);
+
+backdrop-filter: blur(10px);
+}
+
+/* =========================================================
+TITLE
+========================================================= */
+
+.title-section {
+text-align: left;
+}
+
+.title-section h1 {
+margin: 0;
+
+color: #ffffff;
+
+font-size: 1.85rem;
+
+font-weight: 800;
+
+letter-spacing: 0.6px;
+
+line-height: 1.2;
+
+text-shadow:
+0 2px 8px rgba(0, 0, 0, 0.20);
+}
+
+/* =========================================================
+SUBTITLE
+========================================================= */
+
+.title-section p {
+margin: 6px 0 0;
+
+color: #bfdbfe;
+
+font-size: 0.88rem;
+
+font-weight: 500;
+
+letter-spacing: 1px;
+}
+
+/* =========================================================
+HEADER ACTIONS
+========================================================= */
+
+.header-actions {
+position: absolute;
+
+right: 30px;
+
+top: 50%;
+
+transform: translateY(-50%);
+
+display: flex;
+
+align-items: center;
+
+z-index: 10;
+}
+
+/* =========================================================
+LOGIN / LOGOUT BUTTONS
+========================================================= */
+
+.header-login-btn,
+.header-logout-btn {
+border: none;
+
+border-radius: 10px;
+
+padding: 11px 19px;
+
+font-size: 14px;
+
+font-weight: 700;
+
+cursor: pointer;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 7px;
+
+transition:
+transform 0.2s ease,
+box-shadow 0.2s ease,
+background 0.2s ease;
+}
+
+/* =========================================================
+LOGIN
+========================================================= */
+
+.header-login-btn {
+background: rgba(255, 255, 255, 0.96);
+
+color: #172554;
+
+border: 1px solid rgba(255, 255, 255, 0.60);
+
+box-shadow:
+0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.header-login-btn {
+background: #ffffff;
+
+transform: translateY(-2px);
+
+box-shadow:
+0 9px 22px rgba(0, 0, 0, 0.22);
+}
+
+/* =========================================================
+LOGOUT
+========================================================= */
+
+.header-logout-btn {
+background:
+linear-gradient(
+135deg,
+#ef4444,
+#dc2626
+);
+
+color: #ffffff;
+
+box-shadow:
+0 6px 18px rgba(220, 38, 38, 0.25);
+}
+
+.header-logout-btn {
+background:
+linear-gradient(
+135deg,
+#f05252,
+#b91c1c
+);
+
+transform: translateY(-2px);
+
+box-shadow:
+0 9px 22px rgba(220, 38, 38, 0.35);
+}
+
+/* =========================================================
+TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+.wpl-header {
+padding: 18px 20px;
+}
+
+.title-section h1 {
+font-size: 1.55rem;
+}
+
+.logo-icon {
+width: 54px;
+height: 54px;
+
+font-size: 2.1rem;
+
+}
+
+.header-actions {
+right: 20px;
+}
+
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+.wpl-header {
+min-height: 145px;
+
+padding:
+  16px 15px 20px;
+
+}
+
+.logo-section {
+flex-direction: column;
+
+text-align: center;
+
+gap: 6px;
+
+padding-top: 25px;
+
+}
+
+.logo-icon {
+width: 48px;
+height: 48px;
+
+border-radius: 14px;
+
+font-size: 2rem;
+
+}
+
+.title-section {
+text-align: center;
+}
+
+.title-section h1 {
+font-size: 1.35rem;
+
+letter-spacing: 0.3px;
+
+}
+
+.title-section p {
+font-size: 10px;
+
+margin-top: 4px;
+
+}
+
+.header-actions {
+top: 12px;
+
+right: 15px;
+
+transform: none;
+
+}
+
+.header-login-btn,
+.header-logout-btn {
+padding: 7px 11px;
+
+font-size: 11px;
+
+border-radius: 8px;
+
+}
+
+}
+
+/* =========================================================
+SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+.wpl-header {
+min-height: 140px;
+}
+
+.title-section h1 {
+font-size: 1.15rem;
+}
+
+.title-section p {
+font-size: 9px;
+
+letter-spacing: 0.5px;
+
+}
+
+.logo-icon {
+width: 44px;
+height: 44px;
+
+font-size: 1.8rem;
+
+}
+
+}

@@ -1,0 +1,684 @@
+.category-page {
+  padding: 28px;
+  min-height: 100%;
+  background: #f5f7fb;
+}
+
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.title-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2ff;
+  font-size: 25px;
+}
+
+.page-title h1 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+  color: #172033;
+}
+
+.page-title p {
+  margin: 5px 0 0;
+  color: #7a8497;
+  font-size: 14px;
+}
+
+.header-count {
+  min-width: 100px;
+  padding: 12px 18px;
+  background: white;
+  border: 1px solid #e7eaf0;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.header-count strong {
+  display: block;
+  font-size: 20px;
+  color: #1d4ed8;
+}
+
+.header-count span {
+  color: #7a8497;
+  font-size: 12px;
+}
+
+
+/* ==================================================
+   CATEGORY NAME
+================================================== */
+
+.category-name-card {
+  background: white;
+  border: 1px solid #e6e9ef;
+  border-radius: 15px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.category-name-card label {
+  display: block;
+  font-weight: 600;
+  color: #273142;
+  margin-bottom: 9px;
+}
+
+.category-name-card input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid #d9dee8;
+  border-radius: 9px;
+  outline: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.category-name-card input:focus {
+  border-color: #4f46e5;
+}
+
+.category-name-card small {
+  display: block;
+  margin-top: 8px;
+  color: #8a93a5;
+}
+
+
+/* ==================================================
+   PLAYERS CARD
+================================================== */
+
+.players-card {
+  background: white;
+  border: 1px solid #e6e9ef;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.players-header {
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.players-header h2 {
+  margin: 0;
+  color: #202938;
+  font-size: 18px;
+}
+
+.players-header p {
+  margin: 5px 0 0;
+  color: #858fa0;
+  font-size: 13px;
+}
+
+.players-total {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  color: #536071;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* ==================================================
+   PLAYER ROW
+================================================== */
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 15px 24px;
+  border-bottom: 1px solid #edf0f4;
+  transition: 0.2s;
+}
+
+.player-row:hover {
+  background: #fafbff;
+}
+
+.player-row.player-selected {
+  background: #f5f7ff;
+}
+
+
+/* ==================================================
+   SELECT BUTTON
+================================================== */
+
+.select-button {
+  width: 100px;
+  min-width: 100px;
+  height: 36px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.select-button:hover {
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+.select-button.selected {
+  background: #4f46e5;
+  color: white;
+  border-color: #4f46e5;
+}
+
+
+/* ==================================================
+   PHOTO
+================================================== */
+
+.player-photo {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #eef2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-photo {
+  font-size: 20px;
+}
+
+
+/* ==================================================
+   PLAYER INFO
+================================================== */
+
+.player-info {
+  flex: 1;
+  min-width: 180px;
+}
+
+.player-info h3 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  color: #202938;
+}
+
+.player-info span {
+  color: #8992a3;
+  font-size: 12px;
+}
+
+
+/* ==================================================
+   PLAYER TYPE
+================================================== */
+
+.player-type {
+  width: 150px;
+}
+
+.player-type span {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+
+/* ==================================================
+   TSHIRT
+================================================== */
+
+.player-tshirt {
+  width: 80px;
+  text-align: center;
+}
+
+.player-tshirt small {
+  display: block;
+  color: #98a0ae;
+  font-size: 10px;
+}
+
+.player-tshirt strong {
+  color: #344054;
+  font-size: 13px;
+}
+
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+.selection-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  background: #fafbfc;
+}
+
+.selection-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.selection-summary span {
+  color: #687386;
+  font-size: 13px;
+}
+
+.selection-summary strong {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4f46e5;
+  color: white;
+  font-size: 12px;
+}
+
+
+/* ==================================================
+   PREVIEW BUTTON
+================================================== */
+
+.preview-button {
+  height: 42px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 9px;
+  background: #4f46e5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.preview-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+/* ==================================================
+   LOADING
+================================================== */
+
+.loading-box {
+  background: white;
+  border-radius: 15px;
+  padding: 60px;
+  text-align: center;
+  color: #687386;
+}
+
+.loader {
+  width: 32px;
+  height: 32px;
+  margin: auto;
+  border: 3px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* ==================================================
+   ERROR
+================================================== */
+
+.error-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+  padding: 18px;
+  border-radius: 12px;
+}
+
+.error-box p {
+  margin: 4px 0 0;
+  color: #7f1d1d;
+  font-size: 13px;
+}
+
+.error-box button {
+  margin-left: auto;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
+  background: #dc2626;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* ==================================================
+   EMPTY
+================================================== */
+
+.empty-box {
+  text-align: center;
+  padding: 55px;
+  color: #7b8495;
+}
+
+.empty-box div {
+  font-size: 35px;
+}
+
+.empty-box h3 {
+  margin: 10px 0 5px;
+  color: #374151;
+}
+
+.empty-box p {
+  margin: 0;
+  font-size: 13px;
+}
+
+
+/* ==================================================
+   PREVIEW
+================================================== */
+
+.preview-page {
+  background: white;
+  border: 1px solid #e6e9ef;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.preview-header {
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.preview-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #4f46e5;
+  letter-spacing: 1px;
+}
+
+.preview-header h1 {
+  margin: 6px 0;
+  color: #172033;
+}
+
+.preview-header p {
+  margin: 0;
+  color: #818a9a;
+  font-size: 13px;
+}
+
+.preview-player-count {
+  text-align: center;
+  padding: 14px 20px;
+  background: #f5f7ff;
+  border-radius: 12px;
+}
+
+.preview-player-count strong {
+  display: block;
+  color: #4f46e5;
+  font-size: 22px;
+}
+
+.preview-player-count span {
+  color: #788295;
+  font-size: 12px;
+}
+
+
+/* ==================================================
+   PREVIEW GRID
+================================================== */
+
+.preview-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  padding: 25px;
+}
+
+.preview-player-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #e6e9ef;
+  border-radius: 12px;
+  background: #fafbfc;
+}
+
+.preview-number {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 11px;
+  color: #9aa3b1;
+  font-weight: 700;
+}
+
+.preview-player-photo {
+  width: 55px;
+  height: 55px;
+  min-width: 55px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e9edf3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-player-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-player-info h3 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  color: #202938;
+}
+
+.preview-player-info span {
+  display: block;
+  color: #4f46e5;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.preview-player-info small {
+  display: block;
+  margin-top: 5px;
+  color: #8992a2;
+}
+
+
+/* ==================================================
+   PREVIEW ACTIONS
+================================================== */
+
+.preview-actions {
+  padding: 20px 25px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #edf0f4;
+  background: #fafbfc;
+}
+
+.back-button {
+  height: 42px;
+  padding: 0 18px;
+  border: 1px solid #d5dae3;
+  border-radius: 9px;
+  background: white;
+  color: #475569;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.save-button {
+  height: 42px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 9px;
+  background: #16a34a;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==================================================
+   ALREADY ASSIGNED PLAYER
+================================================== */
+
+.select-button.already-assigned {
+
+  background: #e5e7eb;
+
+  color: #6b7280;
+
+  border: 1px solid #d1d5db;
+
+  cursor: not-allowed;
+
+  opacity: 0.8;
+
+}
+
+
+.select-button.already-assigned:hover {
+
+  background: #e5e7eb;
+
+  color: #6b7280;
+
+}
+
+
+/* ==================================================
+   ASSIGNED CATEGORY
+================================================== */
+
+.assigned-category {
+
+  color: #b45309;
+
+  font-weight: 600;
+
+}
+
+
+/* ==================================================
+   ASSIGNED PLAYER ROW
+================================================== */
+
+.player-row:has(
+  .select-button.already-assigned
+) {
+
+  background: #f9fafb;
+
+  opacity: 0.85;
+
+}
+
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 800px) {
+
+  .category-page {
+    padding: 15px;
+  }
+
+  .player-row {
+    flex-wrap: wrap;
+  }
+
+  .player-type,
+  .player-tshirt {
+    width: auto;
+  }
+
+  .select-button {
+    order: 5;
+    width: 100%;
+  }
+
+  .players-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+}

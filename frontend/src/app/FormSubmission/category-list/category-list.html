@@ -1,0 +1,797 @@
+<div class="category-page">
+
+  <!-- =========================================
+       CATEGORY LIST
+  ========================================= -->
+
+  <ng-container
+    *ngIf="!selectedCategory"
+  >
+
+    <div class="page-header">
+
+      <div>
+
+        <h1>
+          🏆 Categories
+        </h1>
+
+        <p>
+          View all created categories and their players
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="refresh-btn"
+        (click)="loadCategories()"
+      >
+
+        🔄 Refresh
+
+      </button>
+
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      class="loading-box"
+      *ngIf="isLoading"
+    >
+
+      Loading categories...
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+      class="error-box"
+      *ngIf="
+        errorMessage &&
+        !isLoading
+      "
+    >
+
+      ⚠️
+
+      {{ errorMessage }}
+
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div
+      class="empty-box"
+      *ngIf="
+        !isLoading &&
+        !errorMessage &&
+        categories.length === 0
+      "
+    >
+
+      <div class="empty-icon">
+        🏆
+      </div>
+
+      <h2>
+        No Categories Found
+      </h2>
+
+      <p>
+        Create your first category from
+        Category Selection.
+      </p>
+
+    </div>
+
+
+    <!-- CATEGORY CARDS -->
+
+    <div
+      class="category-grid"
+      *ngIf="
+        !isLoading &&
+        categories.length > 0
+      "
+    >
+
+      <div
+        class="category-card"
+        *ngFor="
+          let category of categories
+        "
+      >
+
+        <!-- ICON -->
+
+        <div class="category-icon">
+          🏆
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="category-info">
+
+          <h2>
+
+            {{ category.categoryName }}
+
+          </h2>
+
+          <p>
+
+            {{
+              category.players?.length || 0
+            }}
+
+            Players
+
+          </p>
+
+          <small>
+
+            Created:
+
+            {{
+              category.createdAt
+                | date:'dd MMM yyyy'
+            }}
+
+          </small>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="category-actions">
+
+          <button
+            type="button"
+            class="view-btn"
+            (click)="
+              selectCategory(category)
+            "
+          >
+
+            View Players →
+
+          </button>
+<button
+    type="button"
+    class="edit-btn"
+    (click)="editCategory(category)"
+  >
+    ✏️
+  </button>
+          
+
+
+          <button
+            type="button"
+            class="delete-btn"
+            (click)="
+              deleteCategory(category)
+            "
+          >
+
+            🗑
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  <!-- =========================================
+     EDIT CATEGORY
+========================================= -->
+
+<ng-container
+  *ngIf="isEditMode"
+>
+
+  <div class="details-header">
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="cancelEdit()"
+    >
+
+      ← Back
+
+    </button>
+
+
+    <div>
+
+      <span>
+        EDIT CATEGORY
+      </span>
+
+      <h1>
+
+        ✏️
+        Edit Category
+
+      </h1>
+
+      <p>
+
+        Add or remove players from this category.
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- CATEGORY NAME -->
+
+  <div class="category-name-card">
+
+    <label>
+      Category Name
+    </label>
+
+    <input
+      type="text"
+      [(ngModel)]="editCategoryName"
+      placeholder="Enter category name"
+      maxlength="50"
+    />
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="error-box"
+    *ngIf="editErrorMessage"
+  >
+
+    ⚠️
+
+    {{ editErrorMessage }}
+
+  </div>
+
+
+  <!-- PLAYER CARD -->
+
+  <div
+    class="players-card"
+    *ngIf="!isLoading"
+  >
+
+    <div class="players-header">
+
+      <div>
+
+        <h2>
+          Add / Remove Players
+        </h2>
+
+        <p>
+          Select the players who should belong
+          to this category.
+        </p>
+
+      </div>
+
+
+      <div class="players-total">
+
+        {{ editSelectedPlayers.length }}
+
+        Players
+
+      </div>
+
+    </div>
+
+
+    <!-- PLAYER LIST -->
+
+    <div class="player-list">
+
+      <div
+        class="player-row"
+        *ngFor="
+          let player of allPlayers
+        "
+        [class.player-selected]="
+          isEditPlayerSelected(player)
+        "
+        [class.player-disabled]="
+          isPlayerInAnotherCategory(player)
+        "
+      >
+
+
+        <!-- BUTTON -->
+
+        <button
+          type="button"
+          class="select-button"
+          [class.selected]="
+            isEditPlayerSelected(player)
+          "
+          [class.already-assigned]="
+            isPlayerInAnotherCategory(player)
+          "
+          [disabled]="
+            isPlayerInAnotherCategory(player)
+          "
+          (click)="
+            toggleEditPlayer(player)
+          "
+        >
+
+          <!-- CURRENT CATEGORY -->
+
+          <span
+            *ngIf="
+              isEditPlayerSelected(player)
+            "
+          >
+
+            ✓ Selected
+
+          </span>
+
+
+          <!-- OTHER CATEGORY -->
+
+          <span
+            *ngIf="
+              !isEditPlayerSelected(player) &&
+              isPlayerInAnotherCategory(player)
+            "
+          >
+
+            🔒
+            {{ player.assignedCategory }}
+
+          </span>
+
+
+          <!-- AVAILABLE -->
+
+          <span
+            *ngIf="
+              !isEditPlayerSelected(player) &&
+              !isPlayerInAnotherCategory(player)
+            "
+          >
+
+            Add
+
+          </span>
+
+        </button>
+
+
+        <!-- PHOTO -->
+
+        <div class="player-photo">
+
+          <img
+            *ngIf="
+              player.playerPhoto
+            "
+            [src]="
+              player.playerPhoto
+            "
+            [alt]="
+              player.playerName
+            "
+          />
+
+          <span
+            *ngIf="
+              !player.playerPhoto
+            "
+          >
+
+            👤
+
+          </span>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="player-info">
+
+          <h3>
+
+            {{
+              player.playerName ||
+              'Unknown Player'
+            }}
+
+          </h3>
+
+          <span>
+
+            📱
+
+            {{
+              player.phoneNumber ||
+              'No phone number'
+            }}
+
+          </span>
+
+        </div>
+
+
+        <!-- CATEGORY -->
+
+        <div class="player-type">
+
+          <span
+            *ngIf="
+              player.isCurrentCategory
+            "
+            class="assigned-category"
+          >
+
+            🏆 Current Category
+
+          </span>
+
+
+          <span
+            *ngIf="
+              isPlayerInAnotherCategory(player)
+            "
+            class="assigned-category"
+          >
+
+            🔒
+            {{ player.assignedCategory }}
+
+          </span>
+
+
+          <span
+            *ngIf="
+              !player.isAssigned
+            "
+          >
+
+            🏏 Available
+
+          </span>
+
+        </div>
+
+
+        <!-- TSHIRT -->
+
+        <div class="player-tshirt">
+
+          <small>
+            T-Shirt
+          </small>
+
+          <strong>
+
+            {{
+              player.tshirtSize ||
+              '-'
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div
+      class="empty-box"
+      *ngIf="
+        allPlayers.length === 0
+      "
+    >
+
+      No players found.
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="selection-footer">
+
+      <div class="selection-summary">
+
+        <span>
+          Selected Players
+        </span>
+
+        <strong>
+          {{ editSelectedPlayers.length }}
+        </strong>
+
+      </div>
+
+
+      <div class="preview-actions">
+
+        <button
+          type="button"
+          class="back-button"
+          (click)="cancelEdit()"
+        >
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="button"
+          class="save-button"
+          [disabled]="
+            isSavingEdit
+          "
+          (click)="
+            saveEditedCategory()
+          "
+        >
+
+          <span
+            *ngIf="!isSavingEdit"
+          >
+
+            ✓ Save Changes
+
+          </span>
+
+
+          <span
+            *ngIf="isSavingEdit"
+          >
+
+            Saving...
+
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-container>
+
+
+  <!-- =========================================
+       SELECTED CATEGORY
+  ========================================= -->
+
+  <ng-container
+    *ngIf="selectedCategory"
+  >
+
+    <!-- HEADER -->
+
+    <div class="details-header">
+
+      <button
+        type="button"
+        class="back-btn"
+        (click)="
+          backToCategories()
+        "
+      >
+
+        ← Back
+
+      </button>
+       <button
+    type="button"
+    class="download-btn"
+    (click)="downloadCategoryPdf()"
+  >
+    📥 Download PDF
+  </button>
+
+
+      <div>
+
+        <span>
+          CATEGORY
+        </span>
+
+        <h1>
+
+          🏆
+          {{ selectedCategory.categoryName }}
+
+        </h1>
+
+        <p>
+
+          {{
+            selectedCategory.players?.length || 0
+          }}
+
+          Players
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- PLAYER LIST -->
+
+    <div class="players-card">
+
+      <div class="players-header">
+
+        <h2>
+          Selected Players
+        </h2>
+
+        <span>
+
+          {{
+            selectedCategory.players?.length || 0
+          }}
+
+          Players
+
+        </span>
+
+      </div>
+
+
+      <div
+        class="player-row"
+        *ngFor="
+          let player of
+          selectedCategory.players;
+          let i = index
+        "
+      >
+
+        <!-- NUMBER -->
+
+        <div class="player-number">
+
+          {{ i + 1 }}
+
+        </div>
+
+
+        <!-- PHOTO -->
+
+        <div class="player-photo">
+
+          <img
+            *ngIf="
+              player.playerPhoto
+            "
+            [src]="
+              player.playerPhoto
+            "
+            [alt]="
+              player.playerName
+            "
+          />
+
+          <span
+            *ngIf="
+              !player.playerPhoto
+            "
+          >
+            👤
+          </span>
+
+        </div>
+
+
+        <!-- NAME -->
+
+        <div class="player-info">
+
+          <strong>
+
+            {{
+              player.playerName ||
+              'Unknown Player'
+            }}
+
+          </strong>
+
+          <small>
+
+            📱
+
+            {{
+              player.phoneNumber ||
+              'N/A'
+            }}
+
+          </small>
+
+        </div>
+
+
+        <!-- PLAYING CATEGORY -->
+
+        <div class="player-role">
+
+          🏏
+
+          {{
+            player.category ||
+            'Player'
+          }}
+
+        </div>
+
+
+        <!-- T-SHIRT -->
+
+        <div class="player-size">
+
+          👕
+          {{
+            player.tshirtSize ||
+            '-'
+          }}
+
+        </div>
+
+      </div>
+
+
+      <!-- NO PLAYERS -->
+
+      <div
+        class="empty-box"
+        *ngIf="
+          !selectedCategory.players ||
+          selectedCategory.players.length === 0
+        "
+      >
+
+        No players in this category.
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

@@ -1,0 +1,552 @@
+<div class="container">
+
+  <h2>🏏 Player Registration Form</h2>
+
+  <form
+    #registrationForm="ngForm"
+    (ngSubmit)="submitForm(registrationForm)"
+    novalidate
+  >
+
+    <!-- ==============================
+         REGISTRATION TYPE
+    =============================== -->
+
+    <div class="form-group">
+
+      <label>
+        📝 Registration Type
+      </label>
+
+      <div class="radio-group">
+
+        <label>
+          <input
+            type="radio"
+            name="registrationType"
+            value="player"
+            [(ngModel)]="registrationType"
+          />
+          Player Registration
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="registrationType"
+            value="tshirt"
+            [(ngModel)]="registrationType"
+          />
+          Only T-Shirt Registration
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         PLAYER NAME
+    =============================== -->
+
+    <div class="form-group">
+
+      <label for="playerName">
+        👤 Player Name
+        <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="playerName"
+        name="playerName"
+        [(ngModel)]="playerName"
+        placeholder="Enter Full Name"
+        required
+        #playerNameControl="ngModel"
+        [class.invalid]="
+          playerNameControl.invalid &&
+          playerNameControl.touched
+        "
+      />
+
+      <div
+        class="error-message"
+        *ngIf="
+          playerNameControl.invalid &&
+          playerNameControl.touched
+        "
+      >
+        This field is required
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         PHONE NUMBER
+    =============================== -->
+
+    <div
+      *ngIf="registrationType === 'player'"
+      class="form-group"
+    >
+
+      <label for="phoneNumber">
+        📞 Phone Number
+        <span class="required">*</span>
+      </label>
+
+      <input
+        type="tel"
+        id="phoneNumber"
+        name="phoneNumber"
+        [(ngModel)]="phoneNumber"
+        placeholder="Enter Mobile Number"
+        required
+        #phoneNumberControl="ngModel"
+        [class.invalid]="
+          phoneNumberControl.invalid &&
+          phoneNumberControl.touched
+        "
+      />
+
+      <div
+        class="error-message"
+        *ngIf="
+          phoneNumberControl.invalid &&
+          phoneNumberControl.touched
+        "
+      >
+        This field is required
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         T-SHIRT SIZE
+    =============================== -->
+
+    <div class="form-group">
+
+      <label>
+        👕 T-Shirt Size
+        <span class="required">*</span>
+      </label>
+
+      <div class="radio-group">
+
+        <label>
+          <input
+            type="radio"
+            name="tshirtSize"
+            value="S"
+            [(ngModel)]="tshirtSize"
+            required
+          />
+          S - 36
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="tshirtSize"
+            value="M"
+            [(ngModel)]="tshirtSize"
+            required
+          />
+          M - 38
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="tshirtSize"
+            value="L"
+            [(ngModel)]="tshirtSize"
+            required
+          />
+          L - 40
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="tshirtSize"
+            value="XL"
+            [(ngModel)]="tshirtSize"
+            required
+          />
+          XL - 42
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            name="tshirtSize"
+            value="XXL"
+            [(ngModel)]="tshirtSize"
+            required
+          />
+          XXL - 44
+        </label>
+
+      </div>
+
+      <!-- T-SHIRT SIZE ERROR -->
+
+      <div
+        class="error-message"
+        *ngIf="
+          !tshirtSize &&
+          registrationForm.submitted
+        "
+      >
+        This field is required
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         OTHER SIZE
+    =============================== -->
+
+    <div
+      *ngIf="!tshirtSize"
+      class="other-size"
+    >
+
+      <label for="otherSize">
+        Other Size
+      </label>
+
+      <input
+        type="text"
+        id="otherSize"
+        name="otherSize"
+        [(ngModel)]="otherSize"
+        placeholder="Enter other size"
+      />
+
+    </div>
+
+
+    <!-- ==============================
+         T-SHIRT NAME
+    =============================== -->
+
+    <div class="form-group">
+
+      <label for="tshirtName">
+        👕 T-Shirt Name
+        <span class="required">*</span>
+      </label>
+
+      <input
+        type="text"
+        id="tshirtName"
+        name="tshirtName"
+        [(ngModel)]="tshirtName"
+        placeholder="Enter Name to Print on T-Shirt"
+        required
+        #tshirtNameControl="ngModel"
+        [class.invalid]="
+          tshirtNameControl.invalid &&
+          tshirtNameControl.touched
+        "
+      />
+
+      <div
+        class="error-message"
+        *ngIf="
+          tshirtNameControl.invalid &&
+          tshirtNameControl.touched
+        "
+      >
+        This field is required
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         PLAYER ONLY FIELDS
+    =============================== -->
+
+    <ng-container
+      *ngIf="registrationType === 'player'"
+    >
+
+      <!-- PLAYING CATEGORY -->
+
+      <div class="form-group">
+
+        <label>
+          🎯 Playing Category
+          <span class="required">*</span>
+        </label>
+
+        <div class="radio-group">
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Batsman"
+              [(ngModel)]="category"
+              required
+            />
+            Batsman
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Bowler"
+              [(ngModel)]="category"
+              required
+            />
+            Bowler
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="All-Rounder"
+              [(ngModel)]="category"
+              required
+            />
+            All-Rounder
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="category"
+              value="Wicket Keeper"
+              [(ngModel)]="category"
+              required
+            />
+            Wicket Keeper
+          </label>
+
+        </div>
+
+        <!-- CATEGORY ERROR -->
+
+        <div
+          class="error-message"
+          *ngIf="
+            !category &&
+            registrationForm.submitted
+          "
+        >
+          This field is required
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           PLAYER PHOTO
+      =============================== -->
+
+     <div
+  *ngIf="registrationType === 'player'"
+  class="form-group"
+>
+
+  <label for="playerPhoto">
+    📸 Upload Player Photo
+    <span class="required">*</span>
+  </label>
+
+  <input
+    type="file"
+    id="playerPhoto"
+    name="playerPhoto"
+    accept="image/jpeg,image/png,image/webp"
+    (change)="onPlayerPhotoSelected($event)"
+    [class.invalid]="
+      registrationForm.submitted &&
+      !playerPhoto
+    "
+  />
+
+  <div
+    class="error-message"
+    *ngIf="
+      registrationForm.submitted &&
+      !playerPhoto
+    "
+  >
+    This field is required
+  </div>
+
+</div>
+
+
+    </ng-container>
+
+<!-- ==============================
+     PAYMENT TYPE
+============================== -->
+
+<div class="form-group">
+
+  <label>
+    💳 Payment Type
+    <span class="required">*</span>
+  </label>
+
+  <div class="radio-group">
+
+<label>
+  <input
+    type="radio"
+    name="paymentType"
+    value="online"
+    [(ngModel)]="paymentType"
+    required
+  />
+  📲 Online Payment
+</label>
+
+<label>
+  <input
+    type="radio"
+    name="paymentType"
+    value="cash"
+    [(ngModel)]="paymentType"
+    required
+  />
+  💵 Cash Payment
+</label>
+
+
+  </div>
+
+</div>
+
+<!-- ==============================
+     PAYMENT SCREENSHOT
+     ONLY REQUIRED FOR ONLINE
+============================== -->
+
+<div
+  *ngIf="paymentType === 'online'"
+  class="form-group"
+>
+
+  <label for="paymentScreenshot">
+    💳 Upload Payment Screenshot
+    <span class="required">*</span>
+  </label>
+
+<input
+type="file"
+id="paymentScreenshot"
+name="paymentScreenshot"
+accept="image/jpeg,image/png,image/webp"
+(change)="onPaymentScreenshotSelected($event)"
+[class.invalid]="
+registrationForm.submitted &&
+!paymentScreenshot
+"
+/>
+
+  <!-- Error ONLY when Online Payment is selected -->
+
+  <div
+    class="error-message"
+    *ngIf="
+      paymentType === 'online' &&
+      registrationForm.submitted &&
+      !paymentScreenshot
+    "
+  >
+    Please upload your payment screenshot
+  </div>
+
+</div>
+
+
+
+
+<!-- ==============================
+     PAYMENT SCREENSHOT
+============================== -->
+
+
+
+
+
+    <!-- ==============================
+         PAYMENT NOTE
+    =============================== -->
+
+    
+
+
+    <!-- ==============================
+         SUBMIT BUTTON
+    =============================== -->
+
+    <button
+      type="submit"
+      class="submit-btn"
+      [disabled]="isSubmitting"
+    >
+
+      {{
+        isSubmitting
+          ? 'Submitting...'
+          : 'Register'
+      }}
+
+    </button>
+
+  </form>
+
+</div>
+
+
+<!-- ==============================
+     SUCCESS POPUP
+============================== -->
+
+<div
+  class="success-overlay"
+  *ngIf="showSuccessPopup"
+>
+
+  <div class="success-popup">
+
+    <div class="success-icon">
+      ✓
+    </div>
+
+    <h2>
+      Registration Successful!
+    </h2>
+
+    <p>
+      Your registration form has been
+      submitted successfully.
+    </p>
+
+    <button
+      type="button"
+      class="success-btn"
+      (click)="closeSuccessPopup()"
+    >
+      OK
+    </button>
+
+  </div>
+
+</div>

@@ -1,0 +1,69 @@
+<header class="wpl-header">
+
+  <!-- ========================================= -->
+  <!-- LOGO / TITLE -->
+  <!-- ========================================= -->
+
+  <div class="logo-section">
+
+    <span class="logo-icon">
+      🏏
+    </span>
+
+    <div class="title-section">
+
+      <h1>
+        Walhekar Premier League 2026
+      </h1>
+
+      <p>
+        Player Registration Portal
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- HEADER ACTIONS -->
+  <!-- ========================================= -->
+
+  <div class="header-actions">
+
+
+    <!-- ======================================= -->
+    <!-- LOGIN BUTTON -->
+    <!-- ======================================= -->
+
+    <button
+      *ngIf="!isLoggedIn"
+      type="button"
+      class="header-login-btn"
+      (click)="login()"
+    >
+
+      🔐 Login
+
+    </button>
+
+
+    <!-- ======================================= -->
+    <!-- LOGOUT BUTTON -->
+    <!-- ======================================= -->
+
+    <button
+      *ngIf="isLoggedIn"
+      type="button"
+      class="header-logout-btn"
+      (click)="logout()"
+    >
+
+      🚪 Logout
+
+    </button>
+
+
+  </div>
+
+</header>

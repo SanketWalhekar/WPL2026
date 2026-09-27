@@ -1,0 +1,81 @@
+<div class="dashboard">
+
+  <app-header></app-header>
+
+  <div class="dashboard-body">
+
+    <aside class="sidebar">
+
+      <div class="sidebar-title">
+        🏠 Dashboard
+      </div>
+
+      <nav class="menu">
+        <a
+          routerLink="/form"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="menu-item"
+        >
+          📝
+          <span>Player Registration</span>
+        </a>
+
+        <a
+          routerLink="/form/registrations"
+          routerLinkActive="active"
+          class="menu-item"
+        >
+          📋
+          <span>Registration Records</span>
+        </a>
+
+        <div *ngIf="loggedIn">
+        <a
+  routerLink="/form/category-selection"
+  routerLinkActive="active"
+  class="menu-item"
+>
+  <span>
+    🏆
+  </span>
+
+  <span>
+    Category Selection
+  </span>
+</a>
+</div>
+
+<div *ngIf="loggedIn">
+<a
+  routerLink="/form/category-list"
+  routerLinkActive="active"
+  class="menu-item"
+>
+  📂 Categories
+</a>
+</div>
+
+<div *ngIf="loggedIn">
+<a
+  routerLink="/form/auction"
+  routerLinkActive="active"
+  class="menu-item"
+>
+  📂 Auction
+</a>
+</div>
+
+      </nav>
+
+    </aside>
+
+    <main class="dashboard-content">
+
+      <router-outlet></router-outlet>
+
+    </main>
+
+  </div>
+
+</div>

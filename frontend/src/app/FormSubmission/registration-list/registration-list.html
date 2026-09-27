@@ -1,0 +1,1037 @@
+<div class="registration-page">
+
+  <!-- =========================================
+       SUMMARY
+  ========================================= -->
+
+  <div class="summary-card">
+
+    <div class="summary-icon">
+      👥
+    </div>
+
+    <div class="summary-content">
+
+      <span class="summary-label">
+        Total Registrations
+      </span>
+
+      <strong class="summary-count">
+        {{ registrations.length }}
+      </strong>
+
+    </div>
+
+
+    <!-- REFRESH -->
+
+    <button
+      class="refresh-btn"
+      type="button"
+      (click)="refreshRegistrations()"
+      [disabled]="isLoading"
+    >
+      🔄
+      {{ isLoading ? 'Loading...' : 'Refresh' }}
+    </button>
+
+
+    <!-- DOWNLOAD PDF -->
+
+    <button
+      class="refresh-btn"
+      type="button"
+      (click)="downloadPDF()"
+      [disabled]="
+        isLoading ||
+        registrations.length === 0
+      "
+    >
+      📄 Download PDF
+    </button>
+
+  </div>
+
+
+  <!-- =========================================
+       LOADING
+  ========================================= -->
+
+  <div
+    class="loading-box"
+    *ngIf="isLoading"
+  >
+
+    <div class="loader"></div>
+
+    <p>
+      Loading registrations...
+    </p>
+
+  </div>
+
+
+  <!-- =========================================
+       ERROR
+  ========================================= -->
+
+  <div
+    class="error-box"
+    *ngIf="
+      errorMessage &&
+      !isLoading
+    "
+  >
+
+    <span>
+      ⚠️
+    </span>
+
+    <p>
+      {{ errorMessage }}
+    </p>
+
+    <button
+      type="button"
+      (click)="refreshRegistrations()"
+    >
+      Try Again
+    </button>
+
+  </div>
+
+
+  <!-- =========================================
+       NO DATA
+  ========================================= -->
+
+  <div
+    class="empty-box"
+    *ngIf="
+      !isLoading &&
+      !errorMessage &&
+      registrations.length === 0
+    "
+  >
+
+    <div class="empty-icon">
+      📋
+    </div>
+
+    <h2>
+      No Registrations Found
+    </h2>
+
+    <p>
+      There are currently no registration records.
+    </p>
+
+  </div>
+
+
+  <!-- =========================================
+       REGISTRATION TABLE
+  ========================================= -->
+
+  <div
+    class="table-card"
+    *ngIf="
+      !isLoading &&
+      !errorMessage &&
+      registrations.length > 0
+    "
+  >
+
+    <!-- TABLE HEADER -->
+
+    <div class="table-header">
+
+      <div>
+
+        <h2>
+          Registration Records
+        </h2>
+
+        <p>
+          All submitted WPL 2026 registrations
+        </p>
+
+      </div>
+
+      <span class="record-count">
+        {{ registrations.length }} Records
+      </span>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              #
+            </th>
+
+            <th>
+              Player
+            </th>
+
+            <th>
+              Registration Type
+            </th>
+
+            <th>
+              Phone
+            </th>
+
+            <th>
+              Category
+            </th>
+
+            <th>
+              T-Shirt Size
+            </th>
+
+            <th>
+              T-Shirt Name
+            </th>
+
+            <th>
+              Player Photo
+            </th>
+
+            <th>
+              Payment
+            </th>
+
+            <th>
+              Registered On
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let registration of registrations;
+              let i = index
+            "
+
+            class="registration-row"
+
+            (click)="
+              openPlayerCard(
+                registration,
+                i
+              )
+            "
+          >
+
+            <!-- =================================
+                 NUMBER
+            ================================= -->
+
+            <td class="serial-number">
+
+              {{ i + 1 }}
+
+            </td>
+
+
+            <!-- =================================
+                 PLAYER
+            ================================= -->
+
+            <td>
+
+              <div class="player-info">
+
+                <div class="player-avatar">
+                  👤
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{
+                      registration.playerName ||
+                      '-'
+                    }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- =================================
+                 REGISTRATION TYPE
+            ================================= -->
+
+            <td>
+
+              <span
+                class="type-badge"
+
+                [class.player-type]="
+                  registration.registrationType ===
+                  'player'
+                "
+
+                [class.tshirt-type]="
+                  registration.registrationType ===
+                  'tshirt'
+                "
+              >
+
+                {{
+                  registration.registrationType ===
+                  'player'
+                    ? '🏏 Player'
+                    : '👕 T-Shirt'
+                }}
+
+              </span>
+
+            </td>
+
+
+            <!-- =================================
+                 PHONE
+            ================================= -->
+
+            <td>
+
+              <span class="phone">
+
+                {{
+                  registration.phoneNumber ||
+                  '-'
+                }}
+
+              </span>
+
+            </td>
+
+
+            <!-- =================================
+                 CATEGORY
+            ================================= -->
+
+            <td>
+
+              <span
+                *ngIf="
+                  registration.registrationType ===
+                  'player'
+                "
+                class="category-badge"
+              >
+
+                {{
+                  registration.category ||
+                  '-'
+                }}
+
+              </span>
+
+
+              <span
+                *ngIf="
+                  registration.registrationType !==
+                  'player'
+                "
+                class="not-applicable"
+              >
+
+                N/A
+
+              </span>
+
+            </td>
+
+
+            <!-- =================================
+                 T-SHIRT SIZE
+            ================================= -->
+
+            <td>
+
+              <strong
+                class="size-value"
+
+                *ngIf="
+                  registration.tshirtSize
+                "
+              >
+
+                {{
+                  registration.tshirtSize
+                }}
+
+              </strong>
+
+
+              <span
+                *ngIf="
+                  !registration.tshirtSize
+                "
+                class="not-applicable"
+              >
+                -
+              </span>
+
+
+              <small
+                *ngIf="
+                  registration.otherSize
+                "
+                class="other-size-value"
+              >
+
+                {{
+                  registration.otherSize
+                }}
+
+              </small>
+
+            </td>
+
+
+            <!-- =================================
+                 T-SHIRT NAME
+            ================================= -->
+
+            <td>
+
+              <span class="tshirt-name">
+
+                {{
+                  registration.tshirtName ||
+                  '-'
+                }}
+
+              </span>
+
+            </td>
+
+
+            <!-- =================================
+                 PLAYER PHOTO
+            ================================= -->
+
+            <td class="image-cell">
+
+              <ng-container
+                *ngIf="
+                  registration.playerPhoto;
+                  else noPlayerPhoto
+                "
+              >
+
+                <img
+  [src]="registration.playerPhoto"
+  alt="Player Photo"
+  class="table-image"/>
+                
+
+              </ng-container>
+
+
+              <ng-template
+                #noPlayerPhoto
+              >
+
+                <span class="not-applicable">
+                  N/A
+                </span>
+
+              </ng-template>
+
+            </td>
+
+
+            <!-- =================================
+                 PAYMENT SCREENSHOT
+            ================================= -->
+
+            <td class="image-cell">
+              <ng-container
+                *ngIf="
+                  registration.paymentScreenshot;
+                  else noPaymentScreenshot
+                "
+              >
+
+               <img
+  [src]="registration.paymentScreenshot"
+  alt="Payment Screenshot"
+  class="table-image payment-image"/>
+                
+
+              </ng-container>
+
+
+              <ng-template
+                #noPaymentScreenshot
+              >
+
+                
+{{
+                  registration.paymentType ||
+                  '-'
+                }}
+              </ng-template>
+
+            </td>
+
+
+            <!-- =================================
+                 DATE
+            ================================= -->
+
+            <td>
+
+              <span class="date-value">
+
+                {{
+                  registration.createdAt
+                    ? (
+                        registration.createdAt
+                        | date:
+                          'dd MMM yyyy, hh:mm a'
+                      )
+                    : '-'
+                }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     PLAYER AUCTION CARD MODAL
+===================================================== -->
+
+<div
+  class="player-modal-overlay"
+
+  *ngIf="
+    selectedRegistration
+  "
+
+  (click)="
+    closePlayerCard()
+  "
+>
+
+
+  <!-- =========================================
+       PLAYER MODAL
+  ========================================= -->
+
+  <div
+    class="player-modal"
+
+    (click)="
+      $event.stopPropagation()
+    "
+  >
+
+
+    <!-- =======================================
+         MODAL HEADER
+    ======================================= -->
+
+    <div class="player-modal-header">
+
+
+      <div class="auction-title">
+
+        <div class="auction-logo">
+          🏏
+        </div>
+
+
+        <div>
+
+          <strong>
+            WPL 2026
+          </strong>
+
+          <small>
+            Player Auction Card
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- CLOSE -->
+
+      <button
+        type="button"
+
+        class="player-close-btn"
+
+        (click)="
+          closePlayerCard()
+        "
+
+        aria-label="Close"
+      >
+
+        ✕
+
+      </button>
+
+    </div>
+
+
+
+    <!-- =======================================
+         PLAYER CARD
+    ======================================= -->
+
+    <div class="auction-player-card">
+
+
+      <!-- =====================================
+           CARD TOP
+      ===================================== -->
+
+      <div class="card-top">
+
+
+        <span class="player-number">
+
+          Player #
+          {{
+            selectedRegistrationIndex + 1
+          }}
+
+        </span>
+
+
+        <span class="player-status">
+
+          ● REGISTERED
+
+        </span>
+
+      </div>
+
+
+
+      <!-- =====================================
+           PLAYER PHOTO
+      ===================================== -->
+
+      <div class="player-photo-section">
+
+
+        <div class="player-photo-ring">
+
+
+          <ng-container
+            *ngIf="
+              selectedRegistration.playerPhoto;
+              else noLargePhoto
+            "
+          >
+
+            <img
+              [src]="
+                
+                  selectedRegistration.playerPhoto
+                
+              "
+
+              [alt]="
+                selectedRegistration.playerName
+              "
+
+              class="player-large-photo"
+            />
+
+          </ng-container>
+
+
+          <ng-template
+            #noLargePhoto
+          >
+
+            <div class="no-photo-large">
+              👤
+            </div>
+
+          </ng-template>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================
+           PLAYER NAME
+      ===================================== -->
+
+      <div class="player-name-section">
+
+
+        <h1>
+
+          {{
+            selectedRegistration.playerName ||
+            'Unknown Player'
+          }}
+
+        </h1>
+
+
+        <span class="player-type-label">
+
+          🏏
+
+          {{
+            selectedRegistration.category ||
+            'PLAYER'
+          }}
+
+        </span>
+
+      </div>
+
+
+
+      <!-- =====================================
+           PLAYER DETAILS
+      ===================================== -->
+
+      <div class="player-details-grid">
+
+
+        <!-- REGISTRATION TYPE -->
+
+        <div class="player-detail-box">
+
+          <span class="detail-icon">
+            🏏
+          </span>
+
+
+          <div>
+
+            <small>
+              Registration Type
+            </small>
+
+            <strong>
+
+              {{
+                selectedRegistration.registrationType ===
+                'player'
+                  ? 'Player'
+                  : 'T-Shirt'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- CATEGORY -->
+
+        <div class="player-detail-box">
+
+          <span class="detail-icon">
+            🏆
+          </span>
+
+
+          <div>
+
+            <small>
+              Category
+            </small>
+
+            <strong>
+
+              {{
+                selectedRegistration.category ||
+                'N/A'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- PHONE -->
+
+        <div class="player-detail-box">
+
+          <span class="detail-icon">
+            📱
+          </span>
+
+
+          <div>
+
+            <small>
+              Contact Number
+            </small>
+
+            <strong>
+
+              {{
+                selectedRegistration.phoneNumber ||
+                'N/A'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- T-SHIRT SIZE -->
+
+        <div class="player-detail-box">
+
+          <span class="detail-icon">
+            👕
+          </span>
+
+
+          <div>
+
+            <small>
+              T-Shirt Size
+            </small>
+
+            <strong>
+
+              {{
+                selectedRegistration.tshirtSize ||
+                selectedRegistration.otherSize ||
+                'N/A'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- T-SHIRT NAME -->
+
+        <div class="player-detail-box">
+
+          <span class="detail-icon">
+            🔤
+          </span>
+
+
+          <div>
+
+            <small>
+              T-Shirt Name
+            </small>
+
+            <strong>
+
+              {{
+                selectedRegistration.tshirtName ||
+                'N/A'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- REGISTERED DATE -->
+
+        <div class="player-detail-box">
+
+          <span class="detail-icon">
+            📅
+          </span>
+
+
+          <div>
+
+            <small>
+              Registered On
+            </small>
+
+            <strong>
+
+              {{
+                selectedRegistration.createdAt
+                  ? (
+                      selectedRegistration.createdAt
+                      | date:'dd MMM yyyy'
+                    )
+                  : 'N/A'
+              }}
+
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================================
+           AUCTION SECTION
+      ===================================== -->
+
+      
+
+
+
+      <!-- =====================================
+           NAVIGATION
+      ===================================== -->
+
+      <div class="player-navigation">
+
+
+        <!-- PREVIOUS -->
+
+        <button
+          type="button"
+
+          class="
+            nav-player-btn
+            previous-btn
+          "
+
+          (click)="
+            previousPlayer()
+          "
+
+          [disabled]="
+            selectedRegistrationIndex === 0
+          "
+        >
+
+          ←
+
+          <span>
+            Previous
+          </span>
+
+        </button>
+
+
+
+        <!-- COUNTER -->
+
+        <div class="player-counter">
+
+          <strong>
+
+            {{
+              selectedRegistrationIndex + 1
+            }}
+
+          </strong>
+
+          <span>
+            /
+          </span>
+
+          <strong>
+
+            {{
+              registrations.length
+            }}
+
+          </strong>
+
+        </div>
+
+
+
+        <!-- NEXT -->
+
+        <button
+          type="button"
+
+          class="
+            nav-player-btn
+            next-btn
+          "
+
+          (click)="
+            nextPlayer()
+          "
+
+          [disabled]="
+            selectedRegistrationIndex ===
+            registrations.length - 1
+          "
+        >
+
+          <span>
+            Next
+          </span>
+
+          →
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

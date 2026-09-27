@@ -1,0 +1,609 @@
+<div class="category-page">
+
+  <!-- ==================================================
+       HEADER
+  ================================================== -->
+
+  <div class="page-header">
+
+    <div>
+
+      <div class="page-title">
+
+        <span class="title-icon">
+          🏆
+        </span>
+
+        <div>
+
+          <h1>
+            Category Selection
+          </h1>
+
+          <p>
+            Create a category and select players
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="header-count">
+
+      <strong>
+        {{ selectedPlayers.length }}
+      </strong>
+
+      <span>
+        Selected
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       CATEGORY NAME
+  ================================================== -->
+
+  <div
+    class="category-name-card"
+    *ngIf="!showPreview"
+  >
+
+    <label>
+      Category Name
+    </label>
+
+    <input
+      type="text"
+      [(ngModel)]="categoryName"
+      placeholder="Enter category name"
+      maxlength="50"
+    />
+
+    <small>
+      Example: Under 21, Senior, Junior, All Rounders
+    </small>
+
+  </div>
+
+
+  <!-- ==================================================
+       LOADING
+  ================================================== -->
+
+  <div
+    class="loading-box"
+    *ngIf="isLoading"
+  >
+
+    <div class="loader"></div>
+
+    <p>
+      Loading registered players...
+    </p>
+
+  </div>
+
+
+  <!-- ==================================================
+       ERROR
+  ================================================== -->
+
+  <div
+    class="error-box"
+    *ngIf="
+      errorMessage &&
+      !isLoading
+    "
+  >
+
+    <span>
+      ⚠️
+    </span>
+
+    <div>
+
+      <strong>
+        Something went wrong
+      </strong>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      (click)="refreshPlayers()"
+    >
+      Retry
+    </button>
+
+  </div>
+
+
+  <!-- ==================================================
+       PLAYER SELECTION
+  ================================================== -->
+
+  <div
+    class="players-card"
+    *ngIf="
+      !isLoading &&
+      !errorMessage &&
+      !showPreview
+    "
+  >
+
+    <!-- HEADER -->
+
+    <div class="players-header">
+
+      <div>
+
+        <h2>
+          Select Players
+        </h2>
+
+        <p>
+          Select the players who should belong
+          to this category.
+        </p>
+
+      </div>
+
+
+      <div class="players-total">
+
+        {{ players.length }}
+
+        Players
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         PLAYER LIST
+    ================================================== -->
+
+    <div class="player-list">
+
+      <div
+        class="player-row"
+        *ngFor="
+          let player of players
+        "
+        [class.player-selected]="
+          isPlayerSelected(player)
+        "
+      >
+
+        <!-- SELECT BUTTON -->
+
+        <button
+  type="button"
+  class="select-button"
+  [class.selected]="
+    isPlayerSelected(player)
+  "
+  [class.already-assigned]="
+    isPlayerAssigned(player)
+  "
+  [disabled]="
+    isPlayerAssigned(player)
+  "
+  (click)="
+    togglePlayer(player)
+  "
+>
+
+  <!-- ALREADY ASSIGNED -->
+
+  <span
+    *ngIf="
+      isPlayerAssigned(player)
+    "
+  >
+
+    ✓ Already Assigned
+
+  </span>
+
+
+  <!-- CURRENTLY SELECTED -->
+
+  <span
+    *ngIf="
+      !isPlayerAssigned(player) &&
+      isPlayerSelected(player)
+    "
+  >
+
+    ✓ Selected
+
+  </span>
+
+
+  <!-- AVAILABLE -->
+
+  <span
+    *ngIf="
+      !isPlayerAssigned(player) &&
+      !isPlayerSelected(player)
+    "
+  >
+
+    Select
+
+  </span>
+
+</button>
+
+          
+
+
+        <!-- PHOTO -->
+
+        <div class="player-photo">
+
+          <img
+            *ngIf="
+              player.playerPhoto
+            "
+            [src]="
+              player.playerPhoto
+            "
+            [alt]="
+              player.playerName
+            "
+          />
+
+          <div
+            *ngIf="
+              !player.playerPhoto
+            "
+            class="no-photo"
+          >
+            👤
+          </div>
+
+        </div>
+
+
+        <!-- PLAYER DETAILS -->
+
+        <div class="player-info">
+
+          <h3>
+
+            {{
+              player.playerName ||
+              'Unknown Player'
+            }}
+
+          </h3>
+
+          <span>
+
+            📱
+
+            {{
+              player.phoneNumber ||
+              'No phone number'
+            }}
+
+          </span>
+
+        </div>
+
+
+        <!-- PLAYER TYPE -->
+
+      <div class="player-type">
+
+  <!-- PLAYER ALREADY ASSIGNED -->
+
+  <span
+    *ngIf="player.isAssigned"
+    class="assigned-category"
+  >
+
+    🔒
+
+    {{ player.assignedCategory }}
+
+  </span>
+
+
+  <!-- PLAYER NOT ASSIGNED -->
+
+  <span
+    *ngIf="!player.isAssigned"
+  >
+
+    🏏
+
+    {{
+      player.category ||
+      'Player'
+    }}
+
+  </span>
+
+</div>
+
+
+        <!-- TSHIRT -->
+
+        <div class="player-tshirt">
+
+          <small>
+            T-Shirt
+          </small>
+
+          <strong>
+
+            {{
+              player.tshirtSize ||
+              '-'
+            }}
+
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div
+      class="empty-box"
+      *ngIf="
+        players.length === 0
+      "
+    >
+
+      <div>
+        👥
+      </div>
+
+      <h3>
+        No Players Found
+      </h3>
+
+      <p>
+        There are no registered players available.
+      </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         BOTTOM ACTION
+    ================================================== -->
+
+    <div class="selection-footer">
+
+      <div class="selection-summary">
+
+        <span>
+          Selected Players
+        </span>
+
+        <strong>
+          {{ selectedPlayers.length }}
+        </strong>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="preview-button"
+        (click)="previewCategory()"
+        
+      >
+
+        👁
+
+        Preview Category
+
+        →
+        
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================
+       PREVIEW
+  ================================================== -->
+
+  <div
+    class="preview-page"
+    *ngIf="showPreview"
+  >
+
+    <!-- PREVIEW HEADER -->
+
+    <div class="preview-header">
+
+      <div>
+
+        <span class="preview-label">
+          CATEGORY PREVIEW
+        </span>
+
+        <h1>
+          {{ categoryName }}
+        </h1>
+
+        <p>
+          Review the selected players before saving.
+        </p>
+
+      </div>
+
+
+      <div class="preview-player-count">
+
+        <strong>
+          {{ selectedPlayers.length }}
+        </strong>
+
+        <span>
+          Players
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         PREVIEW PLAYER GRID
+    ================================================== -->
+
+    <div class="preview-grid">
+
+      <div
+        class="preview-player-card"
+        *ngFor="
+          let player of selectedPlayers;
+          let i = index
+        "
+      >
+
+        <!-- NUMBER -->
+
+        <div class="preview-number">
+
+          {{ i + 1 }}
+
+        </div>
+
+
+        <!-- PHOTO -->
+
+        <div class="preview-player-photo">
+
+          <img
+            *ngIf="
+              player.playerPhoto
+            "
+            [src]="
+              player.playerPhoto
+            "
+            [alt]="
+              player.playerName
+            "
+          />
+
+          <span
+            *ngIf="
+              !player.playerPhoto
+            "
+          >
+            👤
+          </span>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="preview-player-info">
+
+          <h3>
+
+            {{
+              player.playerName ||
+              'Unknown Player'
+            }}
+
+          </h3>
+
+          <span>
+
+            {{
+              player.category ||
+              'Player'
+            }}
+
+          </span>
+
+          <small>
+
+            📱
+
+            {{
+              player.phoneNumber ||
+              'N/A'
+            }}
+
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         PREVIEW ACTIONS
+    ================================================== -->
+
+    <div class="preview-actions">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="backToSelection()"
+      >
+
+        ← Back to Selection
+
+      </button>
+
+
+      <button
+        type="button"
+        class="save-button"
+        (click)="saveCategory()"
+        [disabled]="isSaving"
+      >
+
+        <span
+          *ngIf="!isSaving"
+        >
+          ✓ Save Category
+        </span>
+
+        <span
+          *ngIf="isSaving"
+        >
+          Saving...
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,1899 @@
+<div class="auction-page">
+
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+
+  <div class="auction-header">
+
+    <div class="header-left">
+
+      <div class="auction-icon">
+        🔨
+      </div>
+
+      <div>
+        <span class="eyebrow">
+          AUCTION MANAGEMENT
+        </span>
+
+        <h1>
+          Player Auction
+        </h1>
+
+        <p>
+          Manage teams, auction points and player sales.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="header-status">
+
+      <span
+        class="status-dot"
+        [class.active]="
+          activeSection === 'auction'
+        "
+      ></span>
+
+      <span>
+        {{ activeSection === 'auction'
+          ? 'Auction Active'
+          : 'Auction Setup'
+        }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       GLOBAL MESSAGES
+  ========================================================== -->
+
+  <div
+    class="success-message"
+    *ngIf="successMessage"
+  >
+    <span>✓</span>
+    {{ successMessage }}
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage"
+  >
+    <span>⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+
+  <!-- =========================================================
+       NAVIGATION
+  ========================================================== -->
+
+  <div class="auction-tabs">
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'teams'"
+      (click)="changeSection('teams')"
+    >
+      <span>👥</span>
+      <span>Teams</span>
+    </button>
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'settings'"
+      (click)="changeSection('settings')"
+    >
+      <span>⚙️</span>
+      <span>Auction Settings</span>
+    </button>
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'auction'"
+      (click)="changeSection('auction')"
+    >
+      <span>🔨</span>
+      <span>Start Auction</span>
+    </button>
+
+    <button
+      type="button"
+      [class.active]="activeSection === 'review'"
+      (click)="changeSection('review')"
+    >
+      <span>📊</span>
+      <span>Team Review</span>
+    </button>
+
+  </div>
+
+
+  <!-- =========================================================
+       1. ADD TEAM
+  ========================================================== -->
+
+  <section
+    class="section-container"
+    *ngIf="activeSection === 'teams'"
+  >
+
+    <div class="section-title">
+
+      <div>
+        <span class="section-label">
+          STEP 1
+        </span>
+
+        <h2>
+          Add Teams
+        </h2>
+
+        <p>
+          Create the teams that will participate in the auction.
+        </p>
+      </div>
+
+      <div class="step-number">
+        01
+      </div>
+
+    </div>
+
+
+    <div class="team-layout">
+
+      <!-- ADD TEAM CARD -->
+
+      <div class="form-card">
+
+        <div class="card-heading">
+
+          <div class="heading-icon">
+            👥
+          </div>
+
+          <div>
+            <h3>
+              Add New Team
+            </h3>
+
+            <p>
+              Enter team and owner details.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Team Name
+            <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="teamName"
+            placeholder="e.g. Mumbai Warriors"
+            maxlength="50"
+          />
+
+        </div>
+
+
+        <div class="owners-grid">
+
+          <div class="form-group">
+
+            <label>
+              Owner 1
+              <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="owner1"
+              placeholder="Enter owner name"
+              maxlength="50"
+            />
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Owner 2
+              <span>*</span>
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="owner2"
+              placeholder="Enter owner name"
+              maxlength="50"
+            />
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="primary-button full-width"
+          [disabled]="isAddingTeam"
+          (click)="addTeam()"
+        >
+
+          <span *ngIf="!isAddingTeam">
+            + Add Team
+          </span>
+
+          <span *ngIf="isAddingTeam">
+            Adding...
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- TEAM LIST -->
+
+      <div class="form-card team-list-card">
+
+        <div class="card-heading">
+
+          <div class="heading-icon">
+            🏆
+          </div>
+
+          <div>
+            <h3>
+              Created Teams
+            </h3>
+
+            <p>
+              {{ teams.length }} team(s) registered.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div
+          class="empty-state"
+          *ngIf="teams.length === 0"
+        >
+
+          <div>
+            👥
+          </div>
+
+          <strong>
+            No teams yet
+          </strong>
+
+          <span>
+            Add your first auction team.
+          </span>
+
+        </div>
+
+
+        <div
+          class="team-list"
+          *ngIf="teams.length > 0"
+        >
+
+          <div
+            class="team-item"
+            *ngFor="let team of teams; let i = index"
+          >
+
+            <div class="team-number">
+              {{ i + 1 }}
+            </div>
+
+            <div class="team-avatar">
+              🏏
+            </div>
+
+            <div class="team-info">
+
+              <h4>
+                {{ team.teamName }}
+              </h4>
+
+              <p>
+                {{ team.owner1 }}
+                <span>&</span>
+                {{ team.owner2 }}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- CONTINUE -->
+
+    <div class="section-footer">
+
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="teams.length === 0"
+        (click)="changeSection('settings')"
+      >
+        Continue to Auction Settings
+        →
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       2. AUCTION SETTINGS
+  ========================================================== -->
+
+  <section
+    class="section-container"
+    *ngIf="activeSection === 'settings'"
+  >
+
+    <div class="section-title">
+
+      <div>
+
+        <span class="section-label">
+          STEP 2
+        </span>
+
+        <h2>
+          Points Calculation
+        </h2>
+
+        <p>
+          Set the auction budget and minimum player price.
+        </p>
+
+      </div>
+
+      <div class="step-number">
+        02
+      </div>
+
+    </div>
+
+
+    <!-- RULE EXPLANATION -->
+
+    <div class="calculation-info">
+
+      <div class="info-icon">
+        💡
+      </div>
+
+      <div>
+
+        <strong>
+          How the auction budget works
+        </strong>
+
+        <p>
+          Each team must reserve the minimum points
+          required for every player slot that is still empty.
+          This prevents a team from spending all its points
+          on one player.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="settings-grid">
+
+      <!-- MAXIMUM POINTS -->
+
+      <div class="setting-card">
+
+        <div class="setting-icon blue">
+          💰
+        </div>
+
+        <label>
+          Maximum Auction Points
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="maximumPoints"
+          min="1"
+          placeholder="5000"
+        />
+
+        <small>
+          Maximum points available to every team.
+        </small>
+
+      </div>
+
+
+      <!-- MINIMUM PLAYER -->
+
+      <div class="setting-card">
+
+        <div class="setting-icon green">
+          🏷️
+        </div>
+
+        <label>
+          Minimum Points Per Player
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="minimumPlayerPoints"
+          min="1"
+          placeholder="150"
+        />
+
+        <small>
+          Minimum amount required for each player.
+        </small>
+
+      </div>
+
+
+      <!-- PLAYERS PER TEAM -->
+
+      <div class="setting-card">
+
+        <div class="setting-icon orange">
+          👤
+        </div>
+
+        <label>
+          Players Per Team
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="playersPerTeam"
+          min="1"
+          placeholder="12"
+        />
+
+        <small>
+          Every team must purchase this many players.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <!-- LIVE CALCULATION -->
+
+    <div
+      class="calculation-card"
+      *ngIf="
+        maximumPoints &&
+        minimumPlayerPoints &&
+        playersPerTeam
+      "
+    >
+
+      <div class="calculation-header">
+
+        <div>
+          <h3>
+            Initial Budget Calculation
+          </h3>
+
+          <p>
+            Maximum amount available for the first player.
+          </p>
+        </div>
+
+        <span>
+          LIVE
+        </span>
+
+      </div>
+
+
+      <div class="calculation-row">
+
+        <div>
+          Maximum Points
+        </div>
+
+        <strong>
+          {{ maximumPoints }}
+        </strong>
+
+      </div>
+
+
+      <div class="calculation-row">
+
+        <div>
+          Minimum Player Points
+        </div>
+
+        <strong>
+          {{ minimumPlayerPoints }}
+        </strong>
+
+      </div>
+
+
+      <div class="calculation-row">
+
+        <div>
+          Players Per Team
+        </div>
+
+        <strong>
+          {{ playersPerTeam }}
+        </strong>
+
+      </div>
+
+
+      <div class="calculation-row reserve">
+
+        <div>
+          Initial Minimum Reserve
+        </div>
+
+        <strong>
+          {{
+            minimumPlayerPoints *
+            playersPerTeam
+          }}
+        </strong>
+
+      </div>
+
+
+      <div class="calculation-total">
+
+        <span>
+          Maximum First Player Bid
+        </span>
+
+        <strong>
+          {{
+            maximumPoints -
+            (
+              minimumPlayerPoints *
+              playersPerTeam
+            )
+          }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="section-footer settings-footer">
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="changeSection('teams')"
+      >
+        ← Back
+      </button>
+
+      <button
+        type="button"
+        class="primary-button"
+        [disabled]="isSavingSettings"
+        (click)="saveAuctionSettings()"
+      >
+
+        <span *ngIf="!isSavingSettings">
+          Save Settings & Start Auction →
+        </span>
+
+        <span *ngIf="isSavingSettings">
+          Saving...
+        </span>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       3. START AUCTION
+  ========================================================== -->
+
+  <section
+    class="section-container auction-section"
+    *ngIf="activeSection === 'auction'"
+  >
+
+    <div class="section-title auction-section-title">
+
+      <div>
+
+        <span class="section-label">
+          STEP 3
+        </span>
+
+        <h2>
+          Start Auction
+        </h2>
+
+        <p>
+          Select a category and auction each player.
+        </p>
+
+      </div>
+
+      <div class="auction-live-badge">
+        <span></span>
+        LIVE AUCTION
+      </div>
+
+    </div>
+
+
+    <!-- CATEGORY SELECTOR -->
+
+    <div class="category-selector-card">
+
+      <div class="category-selector-heading">
+
+        <div>
+
+          <label>
+            Select Category
+          </label>
+
+          <p>
+            Choose the category whose players you want to auction.
+          </p>
+
+        </div>
+
+        <div class="category-count">
+          {{ categories.length }}
+          Categories
+        </div>
+
+      </div>
+
+
+      <div
+        class="category-buttons"
+        *ngIf="!isLoadingCategories"
+      >
+
+        <button
+          type="button"
+          *ngFor="let category of categories"
+          [class.selected]="
+            selectedCategory?._id === category._id
+          "
+          (click)="selectCategory(category)"
+        >
+
+          <span class="category-button-icon">
+            🏏
+          </span>
+
+          <span>
+
+            <strong>
+              {{ category.categoryName }}
+            </strong>
+
+            <small>
+              {{ category.playerCount }}
+              Players
+            </small>
+
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <div
+        class="loading-state"
+        *ngIf="isLoadingCategories"
+      >
+        Loading categories...
+      </div>
+
+
+      <div
+        class="empty-state compact"
+        *ngIf="
+          !isLoadingCategories &&
+          categories.length === 0
+        "
+      >
+
+        <strong>
+          No categories found
+        </strong>
+
+        <span>
+          Create categories before starting the auction.
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- AUCTION AREA -->
+
+    <div
+      class="auction-workspace"
+      *ngIf="selectedCategory"
+    >
+
+
+      <!-- LEFT PLAYER LIST -->
+
+      <div class="auction-player-list-card">
+
+        <div class="player-list-heading">
+
+          <div>
+
+            <span>
+              CATEGORY
+            </span>
+
+            <h3>
+              {{ selectedCategory.categoryName }}
+            </h3>
+
+          </div>
+
+          <div class="category-progress">
+
+            <strong>
+              {{ getCategorySoldCount() }}
+              /
+              {{ auctionPlayers.length }}
+            </strong>
+
+            <small>
+              Sold
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="player-list-loading"
+          *ngIf="isLoadingPlayers"
+        >
+          Loading players...
+        </div>
+
+
+        <div
+          class="auction-player-list"
+          *ngIf="
+            !isLoadingPlayers &&
+            auctionPlayers.length > 0
+          "
+        >
+
+          <button
+            type="button"
+            class="auction-player-list-item"
+            *ngFor="
+              let player of auctionPlayers;
+              let i = index
+            "
+            [class.current]="
+              currentPlayer?._id === player._id
+            "
+            [class.sold]="
+              player.status === 'SOLD'
+            "
+            (click)="selectPlayer(player, i)"
+          >
+
+            <div class="mini-player-number">
+              {{ i + 1 }}
+            </div>
+
+
+            <div class="mini-player-photo">
+
+              <img
+                *ngIf="player.playerPhoto"
+                [src]="player.playerPhoto"
+                [alt]="player.playerName"
+              />
+
+              <span
+                *ngIf="!player.playerPhoto"
+              >
+                👤
+              </span>
+
+            </div>
+
+
+            <div class="mini-player-info">
+
+              <strong>
+                {{ player.playerName }}
+              </strong>
+
+              <small>
+                {{ player.categoryName }}
+              </small>
+
+            </div>
+
+
+            <div
+              class="mini-sold-info"
+              *ngIf="player.status === 'SOLD'"
+            >
+
+              <strong>
+                SOLD
+              </strong>
+
+              <span>
+                {{ player.soldPoints }}
+              </span>
+
+            </div>
+
+
+            <div
+              class="mini-available"
+              *ngIf="player.status !== 'SOLD'"
+            >
+              Available
+            </div>
+
+          </button>
+
+        </div>
+
+
+        <div
+          class="empty-state compact"
+          *ngIf="
+            !isLoadingPlayers &&
+            auctionPlayers.length === 0
+          "
+        >
+
+          <strong>
+            No players in this category
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- CENTER CURRENT PLAYER -->
+
+      <div class="current-player-area">
+
+        <div
+          class="player-card"
+          *ngIf="currentPlayer"
+        >
+
+          <!-- PLAYER PHOTO -->
+
+          <div class="large-player-photo">
+
+            <img
+              *ngIf="currentPlayer.playerPhoto"
+              [src]="currentPlayer.playerPhoto"
+              [alt]="currentPlayer.playerName"
+            />
+
+            <span
+              *ngIf="!currentPlayer.playerPhoto"
+            >
+              👤
+            </span>
+
+          </div>
+
+
+          <!-- PLAYER INFO -->
+
+          <div class="current-player-info">
+
+            <div class="player-status-row">
+
+              <span class="player-number-badge">
+                PLAYER
+                {{ currentPlayerIndex + 1 }}
+              </span>
+
+              <span
+                class="available-badge"
+                *ngIf="
+                  currentPlayer.status ===
+                  'AVAILABLE'
+                "
+              >
+                ● AVAILABLE
+              </span>
+
+              <span
+                class="sold-badge"
+                *ngIf="
+                  currentPlayer.status ===
+                  'SOLD'
+                "
+              >
+                ✓ SOLD
+              </span>
+
+            </div>
+
+
+            <h1>
+              {{ currentPlayer.playerName }}
+            </h1>
+
+
+            <div class="player-detail-grid">
+
+              <div>
+
+                <span>
+                  Category
+                </span>
+
+                <strong>
+                  {{ currentPlayer.categoryName }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  Phone
+                </span>
+
+                <strong>
+                  {{ currentPlayer.phoneNumber || '-' }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  T-Shirt
+                </span>
+
+                <strong>
+                  {{ currentPlayer.tshirtSize || '-' }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  T-Shirt Name
+                </span>
+
+                <strong>
+                  {{ currentPlayer.tshirtName || '-' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- SOLD DETAILS -->
+
+            <div
+              class="sold-result"
+              *ngIf="
+                currentPlayer.status === 'SOLD'
+              "
+            >
+
+              <span>
+                SOLD TO
+              </span>
+
+              <strong>
+                {{
+                  currentPlayer.soldToTeam?.teamName
+                  || '-'
+                }}
+              </strong>
+
+              <div class="sold-points">
+
+                <small>
+                  SOLD FOR
+                </small>
+
+                <b>
+                  {{ currentPlayer.soldPoints }}
+                  Points
+                </b>
+
+              </div>
+
+            </div>
+
+
+            <!-- SOLD BUTTON -->
+
+            <button
+              type="button"
+              class="big-sold-button"
+              *ngIf="
+                currentPlayer.status ===
+                'AVAILABLE'
+              "
+              (click)="openSoldPopup()"
+            >
+              🔨 SOLD PLAYER
+            </button>
+
+
+            <div
+              class="already-sold-message"
+              *ngIf="
+                currentPlayer.status ===
+                'SOLD'
+              "
+            >
+              ✓ This player has already been sold.
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- PLAYER NAVIGATION -->
+
+        <div
+          class="player-navigation"
+          *ngIf="currentPlayer"
+        >
+
+          <button
+            type="button"
+            (click)="previousPlayer()"
+            [disabled]="currentPlayerIndex === 0"
+          >
+            ← Previous
+          </button>
+
+
+          <div class="player-position">
+
+            <strong>
+              {{ currentPlayerIndex + 1 }}
+            </strong>
+
+            <span>
+              /
+              {{ auctionPlayers.length }}
+            </span>
+
+          </div>
+
+
+          <button
+            type="button"
+            (click)="nextPlayer()"
+            [disabled]="
+              currentPlayerIndex ===
+              auctionPlayers.length - 1
+            "
+          >
+            Next →
+          </button>
+
+        </div>
+
+
+        <!-- CATEGORY COMPLETE -->
+
+        <div
+          class="category-complete-card"
+          *ngIf="isCategoryCompleted()"
+        >
+
+          <div class="complete-icon">
+            ✓
+          </div>
+
+          <div>
+
+            <h3>
+              {{ selectedCategory.categoryName }}
+              Completed
+            </h3>
+
+            <p>
+              All players in this category have been auctioned.
+            </p>
+
+          </div>
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="goToNextCategory()"
+          >
+            Next Category →
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- AUCTION BOTTOM TEAM SUMMARY -->
+
+    <div class="auction-team-summary">
+
+      <div class="summary-heading">
+
+        <div>
+
+          <span>
+            LIVE TEAM STATUS
+          </span>
+
+          <h3>
+            Team Budget
+          </h3>
+
+        </div>
+
+        <button
+          type="button"
+          class="outline-button"
+          (click)="changeSection('review')"
+        >
+          View Full Review →
+        </button>
+
+      </div>
+
+
+      <div class="quick-team-grid">
+
+        <div
+          class="quick-team-card"
+          *ngFor="let team of teamReview"
+        >
+
+          <div class="quick-team-top">
+
+            <div class="quick-team-icon">
+              🏏
+            </div>
+
+            <div>
+
+              <strong>
+                {{ team.teamName }}
+              </strong>
+
+              <small>
+                {{ team.playersBought }}
+                /
+                {{
+                  team.playersBought +
+                  team.playersRemaining
+                }}
+                Players
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="quick-team-budget">
+
+            <div>
+
+              <span>
+                Spent
+              </span>
+
+              <strong>
+                {{ team.spentPoints }}
+              </strong>
+
+            </div>
+
+            <div>
+
+              <span>
+                Remaining
+              </span>
+
+              <strong>
+                {{ team.remainingPoints }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="budget-progress">
+
+            <div
+              class="budget-progress-bar"
+              [style.width.%]="
+                team.maximumPoints > 0
+                  ? (
+                      team.spentPoints /
+                      team.maximumPoints
+                    ) * 100
+                  : 0
+              "
+            ></div>
+
+          </div>
+
+
+          <div class="next-bid-info">
+
+            <span>
+              Maximum Next Bid
+            </span>
+
+            <strong>
+              {{ team.maximumNextBid }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       4. TEAM REVIEW
+  ========================================================== -->
+
+  <section
+    class="section-container"
+    *ngIf="activeSection === 'review'"
+  >
+
+    <div class="section-title">
+
+      <div>
+
+        <span class="section-label">
+          AUCTION DASHBOARD
+        </span>
+
+        <h2>
+          Team Review
+        </h2>
+
+        <p>
+          Monitor each team's players, points and remaining budget.
+        </p>
+
+      </div>
+
+      <div class="step-number">
+        📊
+      </div>
+
+    </div>
+
+
+    <div
+      class="loading-state"
+      *ngIf="isLoadingReview"
+    >
+      Loading team review...
+    </div>
+
+
+    <div
+      class="review-grid"
+      *ngIf="
+        !isLoadingReview &&
+        teamReview.length > 0
+      "
+    >
+
+      <div
+        class="review-team-card"
+        *ngFor="let team of teamReview"
+      >
+
+        <!-- TEAM HEADER -->
+
+        <div class="review-team-header">
+
+          <div class="review-team-icon">
+            🏏
+          </div>
+
+          <div>
+
+            <h3>
+              {{ team.teamName }}
+            </h3>
+
+            <p>
+              {{ team.owner1 }}
+              &
+              {{ team.owner2 }}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- PLAYER COUNT -->
+
+        <div class="review-player-count">
+
+          <div>
+
+            <span>
+              Players Purchased
+            </span>
+
+            <strong>
+              {{ team.playersBought }}
+              /
+              {{
+                team.playersBought +
+                team.playersRemaining
+              }}
+            </strong>
+
+          </div>
+
+          <div class="players-remaining">
+
+            <span>
+              Remaining
+            </span>
+
+            <strong>
+              {{ team.playersRemaining }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- PLAYER PROGRESS -->
+
+        <div class="review-progress">
+
+          <div class="review-progress-header">
+
+            <span>
+              Squad Progress
+            </span>
+
+            <strong>
+              {{
+                getTeamProgressPercentage(team)
+              }}%
+            </strong>
+
+          </div>
+
+          <div class="review-progress-track">
+
+            <div
+              class="review-progress-fill"
+              [style.width.%]="
+                getTeamProgressPercentage(team)
+              "
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- MONEY -->
+
+        <div class="review-money-grid">
+
+          <div>
+
+            <span>
+              Maximum
+            </span>
+
+            <strong>
+              {{ team.maximumPoints }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Spent
+            </span>
+
+            <strong>
+              {{ team.spentPoints }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Remaining
+            </span>
+
+            <strong class="remaining-money">
+              {{ team.remainingPoints }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Reserved
+            </span>
+
+            <strong>
+              {{ team.reservedPoints }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- MAX NEXT BID -->
+
+        <div class="maximum-bid-box">
+
+          <div>
+
+            <span>
+              Maximum Allowed Next Bid
+            </span>
+
+            <small>
+              After reserving minimum points for remaining players.
+            </small>
+
+          </div>
+
+          <strong>
+            {{ team.maximumNextBid }}
+          </strong>
+
+        </div>
+
+
+        <!-- PURCHASED PLAYERS -->
+
+        <div class="purchased-players">
+
+          <div class="purchased-heading">
+
+            <h4>
+              Purchased Players
+            </h4>
+
+            <span>
+              {{ team.playersBought }}
+            </span>
+
+          </div>
+
+
+          <div
+            class="purchased-player"
+            *ngFor="let player of team.players"
+          >
+
+            <div class="purchased-player-avatar">
+
+              <img
+                *ngIf="player.playerPhoto"
+                [src]="player.playerPhoto"
+                [alt]="player.playerName"
+              />
+
+              <span
+                *ngIf="!player.playerPhoto"
+              >
+                👤
+              </span>
+
+            </div>
+
+
+            <div class="purchased-player-info">
+
+              <strong>
+                {{ player.playerName }}
+              </strong>
+
+              <small>
+                {{ player.categoryName }}
+              </small>
+
+            </div>
+
+
+            <div class="purchased-player-points">
+
+              <span>
+                SOLD
+              </span>
+
+              <strong>
+                {{ player.soldPoints }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="no-purchased-players"
+            *ngIf="
+              team.players.length === 0
+            "
+          >
+            No players purchased yet.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="empty-state large"
+      *ngIf="
+        !isLoadingReview &&
+        teamReview.length === 0
+      "
+    >
+
+      <div>
+        📊
+      </div>
+
+      <strong>
+        No auction data available
+      </strong>
+
+      <span>
+        Save auction settings and start the auction first.
+      </span>
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="changeSection('settings')"
+      >
+        Go To Settings
+      </button>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<!-- ============================================================
+     SOLD MODAL
+============================================================= -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showSoldPopup"
+  (click)="closeSoldPopup()"
+>
+
+  <div
+    class="sold-modal"
+    (click)="$event.stopPropagation()"
+  >
+
+    <button
+      type="button"
+      class="modal-close"
+      [disabled]="isSellingPlayer"
+      (click)="closeSoldPopup()"
+    >
+      ×
+    </button>
+
+
+    <!-- MODAL HEADER -->
+
+    <div class="modal-header">
+
+      <div class="modal-hammer">
+        🔨
+      </div>
+
+      <div>
+
+        <span>
+          PLAYER SOLD
+        </span>
+
+        <h2>
+          Sell Player
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <!-- PLAYER -->
+
+    <div class="modal-player">
+
+      <div class="modal-player-photo">
+
+        <img
+          *ngIf="currentPlayer?.playerPhoto"
+          [src]="currentPlayer.playerPhoto"
+          [alt]="currentPlayer.playerName"
+        />
+
+        <span
+          *ngIf="!currentPlayer?.playerPhoto"
+        >
+          👤
+        </span>
+
+      </div>
+
+      <div>
+
+        <strong>
+          {{ currentPlayer?.playerName }}
+        </strong>
+
+        <span>
+          {{ currentPlayer?.categoryName }}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+      class="modal-error"
+      *ngIf="sellErrorMessage"
+    >
+
+      ⚠️
+      {{ sellErrorMessage }}
+
+    </div>
+
+
+    <!-- TEAM -->
+
+    <div class="modal-form-group">
+
+      <label>
+        Sold To Team
+        <span>*</span>
+      </label>
+
+      <select
+        [(ngModel)]="selectedTeamId"
+      >
+
+        <option value="">
+          Select Team
+        </option>
+
+        <option
+          *ngFor="let team of teams"
+          [value]="team._id"
+        >
+          {{ team.teamName }}
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- TEAM BUDGET INFO -->
+
+    <div
+      class="selected-team-budget"
+      *ngIf="selectedTeamId"
+    >
+
+      <div>
+
+        <span>
+          Current Remaining
+        </span>
+
+        <strong>
+          {{ getRemainingBudgetForTeam(selectedTeamId) }}
+        </strong>
+
+      </div>
+
+      <div>
+
+        <span>
+          Players Bought
+        </span>
+
+        <strong>
+          {{ getTeamPurchasedCount(selectedTeamId) }}
+        </strong>
+
+      </div>
+
+      <div class="max-bid">
+
+        <span>
+          Maximum Allowed Bid
+        </span>
+
+        <strong>
+          {{ getMaximumAllowedBid(selectedTeamId) }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- SOLD POINTS -->
+
+    <div class="modal-form-group">
+
+      <label>
+        Sold Points
+        <span>*</span>
+      </label>
+
+      <input
+        type="number"
+        [(ngModel)]="soldPoints"
+        min="1"
+        [placeholder]="
+          minimumPlayerPoints
+            ? minimumPlayerPoints.toString()
+            : 'Enter points'
+        "
+      />
+
+      <small
+        *ngIf="selectedTeamId"
+      >
+        Allowed:
+        {{ minimumPlayerPoints }}
+        -
+        {{ getMaximumAllowedBid(selectedTeamId) }}
+        points
+      </small>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="modal-actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        [disabled]="isSellingPlayer"
+        (click)="closeSoldPopup()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="sold-confirm-button"
+        [disabled]="isSellingPlayer"
+        (click)="confirmSold()"
+      >
+
+        <span *ngIf="!isSellingPlayer">
+          🔨 Confirm SOLD
+        </span>
+
+        <span *ngIf="isSellingPlayer">
+          Saving...
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+

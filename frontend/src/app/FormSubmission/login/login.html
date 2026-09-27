@@ -1,0 +1,95 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <!-- LOGO -->
+
+    <div class="login-logo">
+      🏏
+    </div>
+
+
+    <h1>
+      WPL 2026
+    </h1>
+
+    <p class="login-subtitle">
+      Admin Login
+    </p>
+
+
+    <!-- ERROR -->
+
+    <div
+      class="login-error"
+      *ngIf="errorMessage"
+    >
+
+      ⚠️
+
+      <span>
+        {{ errorMessage }}
+      </span>
+
+    </div>
+
+
+    <!-- USERNAME -->
+
+    <div class="form-group">
+
+      <label>
+        Username
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="username"
+        placeholder="Enter username"
+        autocomplete="username"
+      />
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <div class="form-group">
+
+      <label>
+        Password
+      </label>
+
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Enter password"
+        autocomplete="current-password"
+        (keyup.enter)="login()"
+      />
+
+    </div>
+
+
+    <!-- LOGIN BUTTON -->
+
+    <button
+      type="button"
+      class="login-btn"
+      (click)="login()"
+      [disabled]="isLoading"
+    >
+
+      <span *ngIf="!isLoading">
+        🔐 Login
+      </span>
+
+      <span *ngIf="isLoading">
+        Logging in...
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
