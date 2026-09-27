@@ -86,6 +86,69 @@ app.use(
 
 /*
 |--------------------------------------------------------------------------
+| MongoDB connection (serverless-safe)
+|--------------------------------------------------------------------------
+|
+| Vercel reuses warm function instances between requests but can also
+| spin up new ones (cold starts). This ensures every request waits for
+| a real DB connection before touching any model, while avoiding a
+| reconnect on every single request once a warm instance is connected.
+|
+*/
+
+let isConnected = false;
+
+async function connectDB() {
+
+  if (isConnected) {
+    return;
+  }
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error(
+      'MONGODB_URI is missing in environment variables'
+    );
+  }
+
+  console.log('Connecting to MongoDB...');
+
+  await mongoose.connect(
+    process.env.MONGODB_URI
+  );
+
+  isConnected = true;
+
+  console.log('MongoDB connected successfully');
+}
+
+// Ensure DB connection exists before any route handler runs
+app.use(async (req, res, next) => {
+
+  try {
+
+    await connectDB();
+
+    next();
+
+  } catch (error) {
+
+    console.error(
+      'MongoDB connection failed:',
+      error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed'
+    });
+
+  }
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
 | API routes
 |--------------------------------------------------------------------------
 */
@@ -136,36 +199,17 @@ app.get(
 
 /*
 |--------------------------------------------------------------------------
-| MongoDB + Server
+| Local server (Vercel doesn't use app.listen — it handles the HTTP
+| server internally and just invokes the exported app)
 |--------------------------------------------------------------------------
 */
 
 const PORT =
   process.env.PORT || 5000;
 
+if (process.env.NODE_ENV !== 'production') {
 
-async function startServer() {
-
-  try {
-
-    if (!process.env.MONGODB_URI) {
-      throw new Error(
-        'MONGODB_URI is missing in .env file'
-      );
-    }
-
-    console.log('Connecting to MongoDB...');
-
-    await mongoose.connect(
-      process.env.MONGODB_URI
-    );
-
-    console.log(
-      'MongoDB connected successfully'
-    );
-
-    const PORT =
-      process.env.PORT || 5000;
+  connectDB().then(() => {
 
     app.listen(
       PORT,
@@ -176,21 +220,17 @@ async function startServer() {
       }
     );
 
-  } catch (error) {
+  }).catch((error) => {
 
     console.error(
-      'MongoDB connection failed:',
+      'Failed to start local server:',
       error.message
     );
 
     process.exit(1);
-  }
-}
 
+  });
 
-// Local development only
-if (process.env.NODE_ENV !== 'production') {
-  startServer();
 }
 
 
