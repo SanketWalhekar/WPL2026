@@ -6,25 +6,27 @@
 
   <div class="summary-card">
 
-    <div class="summary-icon">
-      👥
-    </div>
+  <div class="summary-icon">
+    👥
+  </div>
 
-    <div class="summary-content">
+  <div class="summary-content">
 
-      <span class="summary-label">
-        Total Registrations
-      </span>
+    <span class="summary-label">
+      Total Registrations
+    </span>
 
-      <strong class="summary-count">
-        {{ registrations.length }}
-      </strong>
+    <strong class="summary-count">
+      {{ registrations.length }}
+    </strong>
 
-    </div>
+  </div>
 
+
+  <!-- ACTION BUTTONS -->
+  <div class="summary-actions">
 
     <!-- REFRESH -->
-
     <button
       class="refresh-btn"
       type="button"
@@ -35,11 +37,9 @@
       {{ isLoading ? 'Loading...' : 'Refresh' }}
     </button>
 
-
     <!-- DOWNLOAD PDF -->
-
     <button
-      class="refresh-btn"
+      class="refresh-btn download-btn"
       type="button"
       (click)="downloadPDF()"
       [disabled]="
@@ -51,6 +51,8 @@
     </button>
 
   </div>
+
+</div>
 
 
   <!-- =========================================
