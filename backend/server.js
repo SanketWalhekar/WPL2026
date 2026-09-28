@@ -20,8 +20,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const uploadsPath = path.join(__dirname, 'uploads');
-app.use('/uploads', express.static(uploadsPath));
+// const uploadsPath = path.join(__dirname, 'uploads');
+// app.use('/uploads', express.static(uploadsPath));
 
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/auth', authRoutes);
