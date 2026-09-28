@@ -241,42 +241,52 @@ router.post(
       // PLAYER PHOTO PATH
       // ------------------------------------------------
 
+      // let playerPhotoPath = '';
+
+      // if (
+      //   req.files &&
+      //   req.files.playerPhoto &&
+      //   req.files.playerPhoto.length > 0
+      // ) {
+
+      //   const file =
+      //     req.files.playerPhoto[0];
+
+      //   playerPhotoPath =
+      //     `/uploads/player-photos/${file.filename}`;
+
+      // }
+
       let playerPhotoPath = '';
+if (req.files && req.files.playerPhoto && req.files.playerPhoto.length > 0) {
+  playerPhotoPath = req.files.playerPhoto[0].path; // full Cloudinary URL
+}
 
-      if (
-        req.files &&
-        req.files.playerPhoto &&
-        req.files.playerPhoto.length > 0
-      ) {
-
-        const file =
-          req.files.playerPhoto[0];
-
-        playerPhotoPath =
-          `/uploads/player-photos/${file.filename}`;
-
-      }
+let paymentScreenshotPath = '';
+if (req.files && req.files.paymentScreenshot && req.files.paymentScreenshot.length > 0) {
+  paymentScreenshotPath = req.files.paymentScreenshot[0].path; // full Cloudinary URL
+}
 
 
       // ------------------------------------------------
       // PAYMENT SCREENSHOT PATH
       // ------------------------------------------------
 
-      let paymentScreenshotPath = '';
+      // let paymentScreenshotPath = '';
 
-      if (
-        req.files &&
-        req.files.paymentScreenshot &&
-        req.files.paymentScreenshot.length > 0
-      ) {
+      // if (
+      //   req.files &&
+      //   req.files.paymentScreenshot &&
+      //   req.files.paymentScreenshot.length > 0
+      // ) {
 
-        const file =
-          req.files.paymentScreenshot[0];
+      //   const file =
+      //     req.files.paymentScreenshot[0];
 
-        paymentScreenshotPath =
-          `/uploads/payment-screenshots/${file.filename}`;
+      //   paymentScreenshotPath =
+      //     `/uploads/payment-screenshots/${file.filename}`;
 
-      }
+      // }
 
 
       // ------------------------------------------------
