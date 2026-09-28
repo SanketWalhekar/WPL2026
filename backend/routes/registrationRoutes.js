@@ -12,110 +12,128 @@ const router = express.Router();
 // UPLOAD DIRECTORIES
 // ======================================================
 
-const uploadsDirectory = path.join(
-  __dirname,
-  '../uploads'
-);
+// const uploadsDirectory = path.join(
+//   __dirname,
+//   '../uploads'
+// );
 
-const playerPhotoDirectory = path.join(
-  uploadsDirectory,
-  'player-photos'
-);
+// const playerPhotoDirectory = path.join(
+//   uploadsDirectory,
+//   'player-photos'
+// );
 
-const paymentScreenshotDirectory = path.join(
-  uploadsDirectory,
-  'payment-screenshots'
-);
-
-
-// Create folders automatically
-fs.mkdirSync(
-  playerPhotoDirectory,
-  {
-    recursive: true
-  }
-);
-
-fs.mkdirSync(
-  paymentScreenshotDirectory,
-  {
-    recursive: true
-  }
-);
+// const paymentScreenshotDirectory = path.join(
+//   uploadsDirectory,
+//   'payment-screenshots'
+// );
 
 
-// ======================================================
-// MULTER STORAGE
-// ======================================================
+// // Create folders automatically
+// fs.mkdirSync(
+//   playerPhotoDirectory,
+//   {
+//     recursive: true
+//   }
+// );
 
-const storage = multer.diskStorage({
-
-  destination: function (
-    req,
-    file,
-    cb
-  ) {
-
-    if (
-      file.fieldname ===
-      'playerPhoto'
-    ) {
-
-      cb(
-        null,
-        playerPhotoDirectory
-      );
-
-      return;
-    }
+// fs.mkdirSync(
+//   paymentScreenshotDirectory,
+//   {
+//     recursive: true
+//   }
+// );
 
 
-    if (
-      file.fieldname ===
-      'paymentScreenshot'
-    ) {
+// // ======================================================
+// // MULTER STORAGE
+// // ======================================================
 
-      cb(
-        null,
-        paymentScreenshotDirectory
-      );
+// const storage = multer.diskStorage({
 
-      return;
-    }
+//   destination: function (
+//     req,
+//     file,
+//     cb
+//   ) {
+
+//     if (
+//       file.fieldname ===
+//       'playerPhoto'
+//     ) {
+
+//       cb(
+//         null,
+//         playerPhotoDirectory
+//       );
+
+//       return;
+//     }
 
 
-    cb(
-      new Error(
-        'Invalid upload field'
-      )
-    );
+//     if (
+//       file.fieldname ===
+//       'paymentScreenshot'
+//     ) {
 
+//       cb(
+//         null,
+//         paymentScreenshotDirectory
+//       );
+
+//       return;
+//     }
+
+
+//     cb(
+//       new Error(
+//         'Invalid upload field'
+//       )
+//     );
+
+//   },
+
+
+//   filename: function (
+//     req,
+//     file,
+//     cb
+//   ) {
+
+//     const extension =
+//       path.extname(
+//         file.originalname
+//       );
+
+//     const uniqueName =
+//       `${Date.now()}-${Math.round(
+//         Math.random() * 1E9
+//       )}${extension}`;
+
+//     cb(
+//       null,
+//       uniqueName
+//     );
+
+//   }
+
+// });
+
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const folder =
+      file.fieldname === 'playerPhoto'
+        ? 'wpl/player-photos'
+        : 'wpl/payment-screenshots';
+
+    return {
+      folder: folder,
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    };
   },
-
-
-  filename: function (
-    req,
-    file,
-    cb
-  ) {
-
-    const extension =
-      path.extname(
-        file.originalname
-      );
-
-    const uniqueName =
-      `${Date.now()}-${Math.round(
-        Math.random() * 1E9
-      )}${extension}`;
-
-    cb(
-      null,
-      uniqueName
-    );
-
-  }
-
 });
 
 
