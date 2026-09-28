@@ -43,17 +43,58 @@ export class SubmitForm {
   this.showSuccessPopup = false;
 }
 
-  onPlayerPhotoSelected(event: Event): void {
+  // ==============================
+  // IMAGE COMPRESSION (NEW)
+  // ==============================
+
+  private compressImage(file: File, maxSize = 1280, quality = 0.8): Promise<File> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+
+        canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(
+          (blob) => {
+            URL.revokeObjectURL(url);
+            if (!blob) return resolve(file);
+            resolve(
+              new File([blob], file.name.replace(/\.\w+$/, '.jpg'), { type: 'image/jpeg' })
+            );
+          },
+          'image/jpeg',
+          quality
+        );
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(file); // fall back to the original if it can't be decoded
+      };
+
+      img.src = url;
+    });
+  }
+
+  // CHANGED: now async + compresses the image
+  async onPlayerPhotoSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.playerPhoto = input.files[0];
+      this.playerPhoto = await this.compressImage(input.files[0]);
     }
   }
 
-  onPaymentScreenshotSelected(event: Event): void {
+  // CHANGED: now async + compresses the image
+  async onPaymentScreenshotSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.paymentScreenshot = input.files[0];
+      this.paymentScreenshot = await this.compressImage(input.files[0]);
     }
   }
 
@@ -240,7 +281,7 @@ export class SubmitForm {
     this.playerPhoto = null;
 
     this.paymentScreenshot = null;
-    this.paymentType === 'online'
+    this.paymentType = 'online';
 
 
     // Clear file inputs from browser
